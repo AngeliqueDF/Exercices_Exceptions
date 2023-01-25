@@ -1,12 +1,25 @@
 public class LeveeException {
-    public static void main(String[] args) {
-        try {
-            System.out.println(saisirChoix((int) (Math.random() * 1000)));
-        } catch (TerminalException e) {
-            System.out.println("Erreur : vous vous devez entrer une valeur numérique.");
-        } catch (Exception e) {
-            System.out.println(e);
+    public static void main(String[] args) throws NbChoixInsuffisantsExceptions {
+        String[] menu1 = {"choix1", "choix2"};
+        affichageMenu(menu1);
+        String[] menu2 = {"choix3", "choix4", "choix5"};
+        affichageMenu(menu2);
+    }
+
+    public static int questionReponse(String[] options) throws NbChoixInsuffisantsExceptions {
+        affichageMenu(options);
+        System.out.println("Saisissez l'option de votre choix.");
+        return Terminal.lireInt();
+    }
+
+    public static void affichageMenu(String[] choixMenu) throws NbChoixInsuffisantsExceptions {
+        if (choixMenu.length < 2)
+            throw new NbChoixInsuffisantsExceptions();
+        System.out.println("Choix de ce menu");
+        for (int i = 0; i < choixMenu.length; i++) {
+            System.out.println(i + 1 + " - " + choixMenu[i]);
         }
+        System.out.println();
     }
 
     public static int saisirChoix(int n) throws Exception {
@@ -23,6 +36,12 @@ public class LeveeException {
         if (valeur < 1 || valeur > n)
             throw new ValeurHorsIntervalle(n);
         return valeur;
+    }
+}
+
+class NbChoixInsuffisantsExceptions extends Exception {
+    NbChoixInsuffisantsExceptions() {
+        super("Erreur : le menu doit comprendre au moins deux choix.");
     }
 }
 
